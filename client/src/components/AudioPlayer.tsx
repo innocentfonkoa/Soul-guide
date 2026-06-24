@@ -22,7 +22,6 @@ export default function AudioPlayer({ practice, onClose, onComplete }: AudioPlay
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-
     const onTimeUpdate = () => {
       setCurrentTime(audio.currentTime);
       setProgress((audio.currentTime / (audio.duration || 1)) * 100);
@@ -32,7 +31,6 @@ export default function AudioPlayer({ practice, onClose, onComplete }: AudioPlay
       setIsPlaying(false);
       handleComplete();
     };
-
     audio.addEventListener('timeupdate', onTimeUpdate);
     audio.addEventListener('loadedmetadata', onLoadedMetadata);
     audio.addEventListener('ended', onEnded);
@@ -99,31 +97,81 @@ export default function AudioPlayer({ practice, onClose, onComplete }: AudioPlay
 
   if (showReflection) {
     return (
-      <div className="fixed inset-0 bg-black/50 z-50 flex items-end justify-center">
-        <div className="bg-cream rounded-t-3xl p-6 w-full max-w-lg animate-slide-up">
-          <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-6" />
-          <h3 className="font-serif text-xl text-charcoal mb-2">A moment to reflect</h3>
-          <p className="text-gray-600 mb-4">{reflectionPrompt}</p>
-          <textarea
-            value={reflectionText}
-            onChange={(e) => setReflectionText(e.target.value)}
-            placeholder="Write freely... or simply close."
-            className="w-full h-28 p-3 rounded-xl border border-gray-200 text-sm text-charcoal resize-none focus:outline-none focus:ring-2 focus:ring-sage-400 bg-white"
-          />
-          <div className="flex gap-3 mt-4">
-            <button
-              onClick={() => onComplete(reflectionPrompt)}
-              className="flex-1 py-3 rounded-xl text-gray-500 text-sm font-medium hover:bg-gray-100 transition-colors"
-            >
-              Skip
-            </button>
-            <button
-              onClick={submitReflection}
-              disabled={submitting}
-              className="flex-1 py-3 rounded-xl bg-sage-600 text-white text-sm font-medium hover:bg-sage-900 transition-colors disabled:opacity-50"
-            >
-              {submitting ? 'Saving...' : 'Save reflection'}
-            </button>
+      <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}>
+        <div
+          className="rounded-3xl w-full mx-4 flex flex-col"
+          style={{
+            backgroundColor: '#fdfaf7',
+            maxWidth: '480px',
+            maxHeight: '90vh',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Scrollable content */}
+          <div style={{ overflowY: 'auto', padding: '24px' }}>
+            <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-6" />
+            <h3 className="font-serif text-xl mb-2" style={{ color: '#2c2c2c' }}>
+              A moment to reflect
+            </h3>
+            <p className="text-sm mb-4" style={{ color: '#6b7280' }}>
+              {reflectionPrompt}
+            </p>
+            <textarea
+              value={reflectionText}
+              onChange={(e) => setReflectionText(e.target.value)}
+              placeholder="Write freely... or simply close."
+              rows={5}
+              style={{
+                width: '100%',
+                padding: '12px',
+                borderRadius: '12px',
+                border: '1px solid #e5e7eb',
+                fontSize: '14px',
+                color: '#2c2c2c',
+                resize: 'none',
+                outline: 'none',
+                backgroundColor: 'white',
+                boxSizing: 'border-box',
+              }}
+            />
+
+            {/* Buttons always visible below textarea */}
+            <div style={{ display: 'flex', gap: '12px', marginTop: '16px', paddingBottom: '8px' }}>
+              <button
+                onClick={() => onComplete(reflectionPrompt)}
+                style={{
+                  flex: 1,
+                  padding: '14px',
+                  borderRadius: '12px',
+                  border: 'none',
+                  backgroundColor: '#f3f4f6',
+                  color: '#6b7280',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                }}
+              >
+                Skip
+              </button>
+              <button
+                onClick={submitReflection}
+                disabled={submitting}
+                style={{
+                  flex: 1,
+                  padding: '14px',
+                  borderRadius: '12px',
+                  border: 'none',
+                  backgroundColor: '#4a7a4a',
+                  color: 'white',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  opacity: submitting ? 0.5 : 1,
+                }}
+              >
+                {submitting ? 'Saving...' : 'Save reflection'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -134,17 +182,13 @@ export default function AudioPlayer({ practice, onClose, onComplete }: AudioPlay
     <div className="fixed inset-0 bg-black/50 z-50 flex items-end justify-center">
       <div className="bg-cream rounded-t-3xl p-6 w-full max-w-lg">
         <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-6" />
-
         <audio ref={audioRef} src={practice.audioUrl || ''} preload="metadata" />
-
         <div className="text-center mb-8">
           <h3 className="font-serif text-xl text-charcoal mb-1">{practice.title}</h3>
           {practice.guideBy && (
             <p className="text-gray-500 text-sm">with {practice.guideBy}</p>
           )}
         </div>
-
-        {/* Waveform visualization */}
         <div className="flex items-center justify-center gap-1.5 h-16 mb-8">
           {[...Array(5)].map((_, i) => (
             <div
@@ -154,8 +198,6 @@ export default function AudioPlayer({ practice, onClose, onComplete }: AudioPlay
             />
           ))}
         </div>
-
-        {/* Progress */}
         <div className="mb-6">
           <div className="bg-gray-200 rounded-full h-1.5 mb-2">
             <div
@@ -168,15 +210,12 @@ export default function AudioPlayer({ practice, onClose, onComplete }: AudioPlay
             <span>{formatTime(duration)}</span>
           </div>
         </div>
-
-        {/* Controls */}
         <div className="flex items-center justify-center gap-8 mb-6">
           <button onClick={() => skip(-10)} className="text-gray-500 hover:text-charcoal transition-colors">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-8 h-8">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
             </svg>
           </button>
-
           <button
             onClick={togglePlay}
             className="w-16 h-16 rounded-full bg-sage-600 text-white flex items-center justify-center hover:bg-sage-900 transition-colors shadow-lg"
@@ -191,21 +230,20 @@ export default function AudioPlayer({ practice, onClose, onComplete }: AudioPlay
               </svg>
             )}
           </button>
-
           <button onClick={() => skip(10)} className="text-gray-500 hover:text-charcoal transition-colors">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-8 h-8">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 15l6-6m0 0l-6-6m6 6H9a6 6 0 000 12h3" />
             </svg>
           </button>
         </div>
-
         <div className="flex gap-3">
           <button onClick={onClose} className="flex-1 py-3 rounded-xl text-gray-500 text-sm font-medium hover:bg-gray-100 transition-colors">
             Close
           </button>
           <button
             onClick={handleComplete}
-            className="flex-1 py-3 rounded-xl bg-clay-500 text-white text-sm font-medium hover:bg-clay-700 transition-colors"
+            className="flex-1 py-3 rounded-xl text-white text-sm font-medium transition-colors"
+            style={{ backgroundColor: '#b07050' }}
           >
             Mark complete
           </button>
