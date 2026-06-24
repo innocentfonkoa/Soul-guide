@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  passwordHash      String
+  name              String
+  createdAt         DateTime  @default(now())
+  transitionType    String?
+  transitionDetail  String?
+  primaryIntention  String?
+  morningOrEvening  String?
+  practiceMinutes   Int?
+  onboardingDone    Boolean   @default(false)
+
+  practices         UserPractice[]
+  reflections       Reflection[]
+  companionMessages CompanionMessage[]
+  activePath        PracticePath?
+  insights          GrowthInsight[]
+}
+
+model Practice {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  category    String
+  theme       String
+  durationMin Int
+  audioUrl    String?
+  guideBy     String?
+  isPremium   Boolean  @default(false)
+  isDaily     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  userPractices UserPractice[]
+  pathItems     PathItem[]
+}
+
+model UserPractice {
+  id          String   @id @default(cuid())
+  userId      String
+  practiceId  String
+  completedAt DateTime @default(now())
+  mood        String?
+
+  user        User     @relation(fields: [userId], references: [id])
+  practice    Practice @relation(fields: [practiceId], references: [id])
+}
+
+model Reflection {
+  id          String   @id @default(cuid())
+  userId      String
+  practiceId  String?
+  prompt      String
+  response    String
+  themes      String[]
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model CompanionMessage {
+  id        String   @id @default(cuid())
+  userId    String
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model PracticePath {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  title     String
+  intention String
+  startDate DateTime   @default(now())
+  endDate   DateTime
+
+  user      User       @relation(fields: [userId], references: [id])
+  items     PathItem[]
+}
+
+model PathItem {
+  id         String       @id @default(cuid())
+  pathId     String
+  practiceId String
+  dayNumber  Int
+  completed  Boolean      @default(false)
+
+  path       PracticePath @relation(fields: [pathId], references: [id])
+  practice   Practice     @relation(fields: [practiceId], references: [id])
+}
+
+model GrowthInsight {
+  id            String   @id @default(cuid())
+  userId        String
+  month         Int
+  year          Int
+  insight       String
+  themes        String[]
+  practiceCount Int
+  generatedAt   DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id])
+}

@@ -1,0 +1,223 @@
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+const practices = [
+  {
+    title: 'Sitting with What Is',
+    description: 'A gentle practice of resting in the present moment without trying to fix or change anything. You are allowed to simply be.',
+    category: 'healing',
+    theme: 'rest',
+    durationMin: 10,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Sarah Chen',
+    isDaily: false,
+  },
+  {
+    title: 'The Body Knows',
+    description: 'Grief lives in the body before it finds words. This somatic practice helps you listen to what your body is carrying and offer it compassion.',
+    category: 'grief',
+    theme: 'loss',
+    durationMin: 15,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Marcus Webb',
+    isDaily: false,
+  },
+  {
+    title: 'Who Are You Now?',
+    description: 'When life changes, so do we. This reflective meditation invites you to meet the person you are becoming with curiosity rather than fear.',
+    category: 'identity',
+    theme: 'belonging',
+    durationMin: 10,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Sarah Chen',
+    isDaily: false,
+  },
+  {
+    title: 'A Small Mercy',
+    description: 'A brief daily pause to offer yourself one small act of kindness. Because you deserve the same grace you give to others.',
+    category: 'healing',
+    theme: 'forgiveness',
+    durationMin: 5,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Amara Osei',
+    isDaily: true,
+  },
+  {
+    title: 'Letters Never Sent',
+    description: 'Some things need to be said even if they can never be heard. A writing meditation for unfinished conversations and unspoken truths.',
+    category: 'grief',
+    theme: 'loss',
+    durationMin: 20,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Marcus Webb',
+    isDaily: false,
+  },
+  {
+    title: 'The Woman in the Mirror',
+    description: 'Who looks back at you? This practice gently explores the gap between who you were told to be and who you are discovering yourself to be.',
+    category: 'identity',
+    theme: 'belonging',
+    durationMin: 10,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Sarah Chen',
+    isDaily: false,
+  },
+  {
+    title: 'What Faith Looks Like Now',
+    description: 'Faith shifts and changes with us. This meditation holds space for doubt, questioning, and the tender search for meaning after loss.',
+    category: 'faith',
+    theme: 'purpose',
+    durationMin: 15,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Amara Osei',
+    isDaily: false,
+  },
+  {
+    title: 'Empty Rooms',
+    description: 'For those navigating a quieter home. This practice transforms the ache of absence into an opening for what comes next.',
+    category: 'healing',
+    theme: 'loss',
+    durationMin: 10,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Marcus Webb',
+    isDaily: false,
+  },
+  {
+    title: 'Releasing What Was',
+    description: 'Letting go is not forgetting. It is making room. A forgiveness practice for releasing the weight of what you have been carrying.',
+    category: 'healing',
+    theme: 'forgiveness',
+    durationMin: 20,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Amara Osei',
+    isDaily: false,
+  },
+  {
+    title: 'Morning Pages, Abbreviated',
+    description: 'Five minutes of uncensored writing to clear the mental clutter and meet your own mind before the day begins.',
+    category: 'identity',
+    theme: 'purpose',
+    durationMin: 10,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Sarah Chen',
+    isDaily: true,
+  },
+  {
+    title: 'Breath Like Coming Home',
+    description: 'The simplest practice: returning to your breath. A five-minute anchor for when the world feels too loud or too empty.',
+    category: 'stillness',
+    theme: 'rest',
+    durationMin: 5,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Amara Osei',
+    isDaily: false,
+  },
+  {
+    title: 'The Courage to Begin Again',
+    description: 'Starting over takes a particular kind of bravery. This practice honors that courage and helps you gather it for the next step.',
+    category: 'identity',
+    theme: 'courage',
+    durationMin: 15,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Marcus Webb',
+    isDaily: false,
+  },
+  {
+    title: 'Where Joy Has Gone',
+    description: 'Joy does not disappear forever. It hides. This gentle exploration helps you find where it has been waiting for you.',
+    category: 'healing',
+    theme: 'joy',
+    durationMin: 10,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Sarah Chen',
+    isDaily: false,
+  },
+  {
+    title: 'Forgiveness as a Practice, Not a Feeling',
+    description: 'You do not have to feel forgiving to practice forgiveness. This meditation separates the act from the emotion and makes it possible.',
+    category: 'healing',
+    theme: 'forgiveness',
+    durationMin: 20,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Amara Osei',
+    isDaily: false,
+  },
+  {
+    title: 'What My Body Is Asking For',
+    description: 'Before words, there is sensation. A body scan practice to hear the quieter requests your body makes when you slow down enough to listen.',
+    category: 'healing',
+    theme: 'rest',
+    durationMin: 10,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Marcus Webb',
+    isDaily: false,
+  },
+  {
+    title: 'Belonging to Yourself',
+    description: 'After belonging to a role, a relationship, or a chapter that has ended: this practice helps you return home to yourself.',
+    category: 'identity',
+    theme: 'belonging',
+    durationMin: 15,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Sarah Chen',
+    isDaily: false,
+  },
+  {
+    title: 'Prayer for the Unmapped',
+    description: 'For those standing at the edge of what they know. A contemplative practice for finding ground when the path ahead is unclear.',
+    category: 'faith',
+    theme: 'purpose',
+    durationMin: 10,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Amara Osei',
+    isDaily: false,
+  },
+  {
+    title: 'Small Joys, Deliberately Noticed',
+    description: 'Joy does not always announce itself. This daily practice trains the eye to notice what is quietly good, right now.',
+    category: 'joy',
+    theme: 'rest',
+    durationMin: 5,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Sarah Chen',
+    isDaily: true,
+  },
+  {
+    title: 'The Conversation I Have Not Had',
+    description: 'Some conversations never happen. This practice creates a safe container for the words you need to say, regardless of whether they can be spoken.',
+    category: 'connection',
+    theme: 'belonging',
+    durationMin: 20,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Marcus Webb',
+    isDaily: false,
+  },
+  {
+    title: 'What Remains',
+    description: 'When everything changes, something endures. A meditation on what loss cannot take from you and what grief reveals about what matters most.',
+    category: 'grief',
+    theme: 'purpose',
+    durationMin: 15,
+    audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    guideBy: 'Amara Osei',
+    isDaily: false,
+  },
+];
+
+async function main() {
+  console.log('Seeding database...');
+  for (const practice of practices) {
+    await prisma.practice.create({ data: practice });
+  }
+  console.log(`Created ${practices.length} practices.`);
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
