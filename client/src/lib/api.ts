@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useStore } from '../store/useStore';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: 'https://soul-guide-production.up.railway.app',
 });
 
 api.interceptors.request.use((config) => {
