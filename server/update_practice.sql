@@ -1,0 +1,1 @@
+UPDATE "Practice" SET "audioUrl" = 'https://res.cloudinary.com/stksaatu/video/upload/v1782326690/ElevenLabs_2026-06-24T18_37_11_Bella_-_Deep_Elegant_and_Intimidating_pvc_sp95_s50_sb75_se43_b_m2_hm2jsn.mp3' WHERE "title" = 'Sitting with What Is';

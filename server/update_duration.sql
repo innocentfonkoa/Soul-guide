@@ -1,0 +1,1 @@
+UPDATE "Practice" SET "durationMin" = 1 WHERE "title" = 'Sitting with What Is';
