@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useStore } from './store/useStore';
+import Landing from './pages/Landing';
 import Onboarding from './pages/Onboarding';
 import Home from './pages/Home';
 import Library from './pages/Library';
@@ -10,7 +11,7 @@ import BottomNav from './components/BottomNav';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { token } = useStore();
-  if (!token) return <Navigate to="/" replace />;
+  if (!token) return <Navigate to="/welcome" replace />;
   return <>{children}</>;
 }
 
@@ -31,6 +32,19 @@ export default function App() {
       <Routes>
         <Route
           path="/"
+          element={
+            token && user?.onboardingDone ? (
+              <Navigate to="/home" replace />
+            ) : token ? (
+              <Navigate to="/auth" replace />
+            ) : (
+              <Navigate to="/welcome" replace />
+            )
+          }
+        />
+        <Route path="/welcome" element={<Landing />} />
+        <Route
+          path="/auth"
           element={
             token && user?.onboardingDone ? (
               <Navigate to="/home" replace />
@@ -99,7 +113,7 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/welcome" replace />} />
       </Routes>
     </BrowserRouter>
   );
