@@ -54,7 +54,7 @@ export default function Home() {
 
   const handleSubscribe = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/subscription/initialize', {
+      const res = await fetch('https://soul-guide-production.up.railway.app/api/subscription/initialize', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
