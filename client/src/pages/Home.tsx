@@ -4,6 +4,8 @@ import { useStore } from '../store/useStore';
 import PracticeCard from '../components/PracticeCard';
 import AudioPlayer from '../components/AudioPlayer';
 
+const API_URL = 'https://soul-guide-production.up.railway.app';
+
 interface Practice {
   id: string;
   title: string;
@@ -23,7 +25,14 @@ export default function Home() {
   const [dailyPractice, setDailyPractice] = useState<Practice | null>(null);
   const [forYouPractices, setForYouPractices] = useState<Practice[]>([]);
   const [activePractice, setActivePractice] = useState<Practice | null>(null);
-  const token = localStorage.getItem('token');
+
+  const getToken = () => {
+    try {
+      return JSON.parse(localStorage.getItem('soulguide-store') || '{}')?.state?.token;
+    } catch {
+      return null;
+    }
+  };
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -34,12 +43,13 @@ export default function Home() {
 
   useEffect(() => {
     const fetchPractices = async () => {
+      const token = getToken();
       try {
         const [dailyRes, forYouRes] = await Promise.all([
-          fetch('http://localhost:3001/api/practices/daily', {
+          fetch(`${API_URL}/api/practices/daily`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch('http://localhost:3001/api/practices/for-you', {
+          fetch(`${API_URL}/api/practices/for-you`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);
@@ -50,11 +60,12 @@ export default function Home() {
       }
     };
     fetchPractices();
-  }, [token]);
+  }, []);
 
   const handleSubscribe = async () => {
+    const token = getToken();
     try {
-      const res = await fetch('https://soul-guide-production.up.railway.app/api/subscription/initialize', {
+      const res = await fetch(`${API_URL}/api/subscription/initialize`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
