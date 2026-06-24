@@ -62,21 +62,8 @@ export default function Home() {
     fetchPractices();
   }, []);
 
-  const handleSubscribe = async () => {
-    const token = getToken();
-    try {
-      const res = await fetch(`${API_URL}/api/subscription/initialize`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-    } catch (err) {
-      console.error(err);
-    }
+  const handleSubscribe = () => {
+    window.location.href = 'https://selar.com/2b3820q571';
   };
 
   return (
