@@ -1,120 +1,149 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useStore } from './store/useStore';
-import Landing from './pages/Landing';
-import Onboarding from './pages/Onboarding';
-import Home from './pages/Home';
-import Library from './pages/Library';
-import Companion from './pages/Companion';
-import Journey from './pages/Journey';
-import Profile from './pages/Profile';
-import BottomNav from './components/BottomNav';
+import { useNavigate } from 'react-router-dom';
 
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { token } = useStore();
-  if (!token) return <Navigate to="/welcome" replace />;
-  return <>{children}</>;
-}
+export default function Landing() {
+  const navigate = useNavigate();
 
-function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-w-lg mx-auto relative min-h-screen">
-      {children}
-      <BottomNav />
+    <div style={{ backgroundColor: '#fdfaf7', minHeight: '100vh', fontFamily: 'Georgia, serif' }}>
+
+      <nav style={{ padding: '20px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '480px', margin: '0 auto' }}>
+        <span style={{ fontSize: '18px', color: '#1a2e1a', fontWeight: 400 }}>SoulGuide</span>
+        <button onClick={() => navigate('/auth')} style={{ fontSize: '13px', color: '#4a7a4a', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'Georgia, serif' }}>
+          Sign in
+        </button>
+      </nav>
+
+      <section style={{ padding: '60px 24px 48px', maxWidth: '480px', margin: '0 auto', textAlign: 'center' }}>
+        <div style={{ width: '72px', height: '72px', borderRadius: '50%', backgroundColor: '#1a2e1a', margin: '0 auto 32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#e8c97a" strokeWidth={1.5} style={{ width: '36px', height: '36px' }}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+          </svg>
+        </div>
+        <h1 style={{ fontSize: '32px', lineHeight: 1.25, color: '#1a2e1a', marginBottom: '20px', fontWeight: 400 }}>
+          You are not lost.<br />You are in transition.
+        </h1>
+        <p style={{ fontSize: '16px', color: '#6b7280', lineHeight: 1.7, marginBottom: '36px' }}>
+          SoulGuide is a daily companion for women navigating life's harder seasons — divorce, grief, empty nest, identity shifts, and quiet reinvention.
+        </p>
+        <button
+          onClick={() => navigate('/auth')}
+          style={{ backgroundColor: '#1a2e1a', color: 'white', border: 'none', borderRadius: '100px', padding: '16px 40px', fontSize: '16px', cursor: 'pointer', fontFamily: 'Georgia, serif', display: 'block', width: '100%', marginBottom: '12px' }}
+        >
+          Begin your journey — it's free
+        </button>
+        <p style={{ fontSize: '12px', color: '#9ca3af' }}>3 practices free. No credit card needed.</p>
+      </section>
+
+      <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
+        <div style={{ backgroundColor: '#1a2e1a', borderRadius: '20px', padding: '28px 24px' }}>
+          <div style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}>
+            {[1,2,3,4,5].map(i => <span key={i} style={{ color: '#e8c97a', fontSize: '16px' }}>★</span>)}
+          </div>
+          <p style={{ color: '#e8d5a3', fontSize: '15px', lineHeight: 1.7, marginBottom: '16px', fontStyle: 'italic' }}>
+            "I am so grateful for SoulGuide. It takes all the things I have been trying to include in my mindfulness practice and makes them accessible in one place."
+          </p>
+          <p style={{ color: '#7ab87a', fontSize: '13px' }}>— Sarah M., navigating divorce</p>
+        </div>
+      </section>
+
+      <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
+        <h2 style={{ fontSize: '22px', color: '#1a2e1a', marginBottom: '28px', fontWeight: 400, textAlign: 'center' }}>How SoulGuide works</h2>
+        {[
+          { num: '01', title: 'Tell us where you are', body: 'A gentle 5-minute onboarding that helps us understand your specific season — not a generic questionnaire.' },
+          { num: '02', title: 'We build your path', body: 'Your personal 30-day practice sequence, selected by AI and shaped around your exact transition and intention.' },
+          { num: '03', title: 'Show up daily', body: 'Guided audio practices, a wise AI companion to think out loud with, and monthly reflections on your growth.' },
+        ].map(step => (
+          <div key={step.num} style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#e6ede6', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <span style={{ fontSize: '12px', color: '#4a7a4a', fontFamily: 'sans-serif', fontWeight: 500 }}>{step.num}</span>
+            </div>
+            <div>
+              <p style={{ fontSize: '15px', color: '#1a2e1a', marginBottom: '4px' }}>{step.title}</p>
+              <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: 1.6 }}>{step.body}</p>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
+        <h2 style={{ fontSize: '22px', color: '#1a2e1a', marginBottom: '24px', fontWeight: 400, textAlign: 'center' }}>What's inside</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          {[
+            { icon: '🎧', title: '20+ guided practices', body: 'Across healing, grief, identity, faith, joy and stillness' },
+            { icon: '🤖', title: 'AI companion', body: 'A wise presence available whenever you need to think out loud' },
+            { icon: '🌱', title: 'Daily rituals', body: 'A new anchor practice every morning' },
+            { icon: '📖', title: 'Growth Mirror', body: 'A personal monthly letter on how you have grown' },
+            { icon: '🛤️', title: '30-day path', body: 'A personalized sequence built around your transition' },
+            { icon: '💭', title: 'Reflections', body: 'Guided prompts after each practice' },
+          ].map(f => (
+            <div key={f.title} style={{ backgroundColor: 'white', borderRadius: '16px', padding: '16px', border: '1px solid #f0f0f0' }}>
+              <div style={{ fontSize: '24px', marginBottom: '8px' }}>{f.icon}</div>
+              <p style={{ fontSize: '13px', color: '#1a2e1a', marginBottom: '4px' }}>{f.title}</p>
+              <p style={{ fontSize: '11px', color: '#9ca3af', lineHeight: 1.5 }}>{f.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
+        <h2 style={{ fontSize: '22px', color: '#1a2e1a', marginBottom: '24px', fontWeight: 400, textAlign: 'center' }}>Simple, honest pricing</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+          <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '20px', border: '1px solid #e5e7eb' }}>
+            <p style={{ fontSize: '16px', color: '#1a2e1a', marginBottom: '8px' }}>Free</p>
+            <p style={{ fontSize: '28px', color: '#1a2e1a', marginBottom: '12px' }}>$0</p>
+            {['3 guided practices', 'Daily ritual', 'Onboarding path'].map(f => (
+              <p key={f} style={{ fontSize: '12px', color: '#6b7280', marginBottom: '6px' }}>✓ {f}</p>
+            ))}
+          </div>
+          <div style={{ backgroundColor: '#1a2e1a', borderRadius: '16px', padding: '20px' }}>
+            <p style={{ fontSize: '16px', color: '#e8d5a3', marginBottom: '4px' }}>Annual</p>
+            <p style={{ fontSize: '28px', color: 'white', marginBottom: '4px' }}>$69.99</p>
+            <p style={{ fontSize: '11px', color: '#7ab87a', marginBottom: '12px' }}>per year</p>
+            {['All 20+ practices', 'AI companion', 'Growth Mirror', '30-day path', 'Reflections'].map(f => (
+              <p key={f} style={{ fontSize: '12px', color: '#c8d9c8', marginBottom: '6px' }}>✓ {f}</p>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
+        {[
+          { quote: 'A beautiful reprieve from the anxiety that can hijack my thoughts. A truly worthy investment.', name: 'Margaret T.' },
+          { quote: 'I LOVE the SoulGuide app! It has changed my life.', name: 'Jennifer K.' },
+        ].map(t => (
+          <div key={t.name} style={{ backgroundColor: 'white', borderRadius: '16px', padding: '20px', border: '1px solid #f0f0f0', marginBottom: '12px' }}>
+            <div style={{ marginBottom: '10px' }}>{[1,2,3,4,5].map(i => <span key={i} style={{ color: '#e8c97a', fontSize: '14px' }}>★</span>)}</div>
+            <p style={{ fontSize: '14px', color: '#2c2c2c', lineHeight: 1.6, marginBottom: '10px', fontStyle: 'italic' }}>"{t.quote}"</p>
+            <p style={{ fontSize: '12px', color: '#9ca3af' }}>— {t.name}</p>
+          </div>
+        ))}
+      </section>
+
+      <section style={{ padding: '0 24px 80px', maxWidth: '480px', margin: '0 auto', textAlign: 'center' }}>
+        <h2 style={{ fontSize: '26px', color: '#1a2e1a', marginBottom: '16px', fontWeight: 400 }}>
+          You showed up.<br />That's everything.
+        </h2>
+        <p style={{ fontSize: '15px', color: '#6b7280', lineHeight: 1.7, marginBottom: '32px' }}>
+          Begin with 3 free practices. No credit card. No commitment.
+        </p>
+        <button
+          onClick={() => navigate('/auth')}
+          style={{ backgroundColor: '#1a2e1a', color: 'white', border: 'none', borderRadius: '100px', padding: '18px 40px', fontSize: '16px', cursor: 'pointer', fontFamily: 'Georgia, serif', display: 'block', width: '100%', marginBottom: '12px' }}
+        >
+          Start for free
+        </button>
+        <button
+          onClick={() => { window.location.href = 'https://selar.com/2b3820q571'; }}
+          style={{ backgroundColor: 'transparent', color: '#4a7a4a', border: '1px solid #4a7a4a', borderRadius: '100px', padding: '16px 40px', fontSize: '14px', cursor: 'pointer', fontFamily: 'Georgia, serif', display: 'block', width: '100%' }}
+        >
+          Unlock full access — $69.99/year
+        </button>
+      </section>
+
+      <footer style={{ padding: '24px', borderTop: '1px solid #f0f0f0', textAlign: 'center' }}>
+        <p style={{ fontSize: '12px', color: '#9ca3af' }}>© 2026 SoulGuide. Built with care for women in transition.</p>
+      </footer>
+
     </div>
-  );
-}
-
-export default function App() {
-  const { token, user } = useStore();
-
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            token && user?.onboardingDone ? (
-              <Navigate to="/home" replace />
-            ) : token ? (
-              <Navigate to="/auth" replace />
-            ) : (
-              <Navigate to="/welcome" replace />
-            )
-          }
-        />
-        <Route path="/welcome" element={<Landing />} />
-        <Route
-          path="/auth"
-          element={
-            token && user?.onboardingDone ? (
-              <Navigate to="/home" replace />
-            ) : (
-              <Onboarding />
-            )
-          }
-        />
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Home />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/library"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Library />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/library/:id"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Library />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/companion"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Companion />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/journey"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Journey />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Profile />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<Navigate to="/welcome" replace />} />
-      </Routes>
-    </BrowserRouter>
   );
 }
