@@ -12,6 +12,8 @@ export interface User {
   practiceMinutes?: number;
   onboardingDone: boolean;
   createdAt: string;
+  subscriptionActive: boolean;
+  subscriptionExpiry?: string;
 }
 
 export interface Practice {
