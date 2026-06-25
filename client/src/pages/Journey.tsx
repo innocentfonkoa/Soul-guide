@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
-import { journeyApi } from '../lib/api';
+
 
 interface Practice {
   id: string;
@@ -66,7 +66,7 @@ const PHASE_PILL: Record<string, string> = {
 export default function Journey() {
   const navigate = useNavigate();
   const { token } = useStore();
-  const API = import.meta.env.VITE_API_URL || 'https://soul-guide-production.up.railway.app';
+  const API = (import.meta as any).env?.VITE_API_URL || 'https://soul-guide-production.up.railway.app';
 
   const [tab, setTab] = useState<'stats' | 'path'>('stats');
 
