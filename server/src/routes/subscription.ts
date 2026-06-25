@@ -93,4 +93,35 @@ router.get('/status', authMiddleware, async (req: Request, res: Response) => {
   }
 });
 
+// POST /api/subscription/activate
+router.post('/activate', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { email } = req.body;
+    if (!email) { res.status(400).json({ error: 'Email is required' }); return; }
+
+    const user = await prisma.user.findUnique({
+      where: { email: email.toLowerCase().trim() },
+    });
+
+    if (!user) { res.status(404).json({ error: 'No account found with that email' }); return; }
+
+    const base = user.subscriptionExpiry && user.subscriptionExpiry > new Date()
+      ? new Date(user.subscriptionExpiry)
+      : new Date();
+    const expiry = new Date(base);
+    expiry.setFullYear(expiry.getFullYear() + 1);
+
+    await prisma.user.update({
+      where: { email: email.toLowerCase().trim() },
+      data: { subscriptionActive: true, subscriptionExpiry: expiry },
+    });
+
+    console.log(`[subscription] ✅ Activated for ${email} until ${expiry}`);
+    res.json({ success: true, expiry });
+  } catch (err) {
+    console.error('[subscription] activate error:', err);
+    res.status(500).json({ error: 'Failed to activate subscription' });
+  }
+});
+
 export default router;

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useStore } from './store/useStore';
 import Landing from './pages/Landing';
+import Activate from './pages/Activate';
 import Onboarding from './pages/Onboarding';
 import Home from './pages/Home';
 import Library from './pages/Library';
@@ -43,6 +44,7 @@ export default function App() {
           }
         />
         <Route path="/welcome" element={<Landing />} />
+        <Route path="/activate" element={<Activate />} />
         <Route
           path="/auth"
           element={
