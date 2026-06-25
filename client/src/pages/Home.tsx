@@ -5,6 +5,8 @@ import PracticeCard from '../components/PracticeCard';
 import AudioPlayer from '../components/AudioPlayer';
 
 const API_URL = 'https://soul-guide-production.up.railway.app';
+const MONTHLY_URL = 'https://selar.com/s641241t38';
+const ANNUAL_URL  = 'https://selar.com/2b3820q571';
 
 interface Practice {
   id: string;
@@ -62,33 +64,47 @@ export default function Home() {
     fetchPractices();
   }, []);
 
-  const handleSubscribe = () => {
-    window.location.href = 'https://selar.com/2b3820q571';
-  };
-
   return (
     <div className="min-h-screen pb-24" style={{ backgroundColor: '#fdfaf7' }}>
+
       {/* Header */}
       <div className="px-5 pt-12 pb-6">
         <p className="text-sm text-gray-400">{getGreeting()}</p>
         <h1 className="text-3xl font-serif text-charcoal">{user?.name}</h1>
       </div>
 
-      {/* Subscription Banner */}
+      {/* Subscription Banner — shows both plans */}
       {!user?.subscriptionActive && (
         <div className="px-5 mb-6">
-          <div className="rounded-2xl p-5 text-center" style={{ backgroundColor: '#1a2e1a' }}>
+          <div className="rounded-2xl p-5" style={{ backgroundColor: '#1a2e1a' }}>
             <p className="text-white font-serif text-lg mb-1">Unlock Full Access</p>
             <p className="text-sm mb-4" style={{ color: '#c8d9c8' }}>
-              Unlimited practices, AI companion and Growth Mirror for $69.99/year
+              All 20 practices, AI companion and Growth Mirror.
             </p>
-            <button
-              onClick={handleSubscribe}
-              className="bg-white font-medium px-6 py-2 rounded-full text-sm"
-              style={{ color: '#1a2e1a' }}
-            >
-              Start my year
-            </button>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+              <a
+                href={MONTHLY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'block', padding: '10px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.3)', color: 'white', fontSize: '13px', textAlign: 'center', textDecoration: 'none', fontFamily: 'Georgia, serif' }}
+              >
+                <p style={{ fontWeight: 400 }}>Monthly</p>
+                <p style={{ fontSize: '16px', marginTop: '2px' }}>$9.99</p>
+              </a>
+              <a
+                href={ANNUAL_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'block', padding: '10px', borderRadius: '12px', backgroundColor: '#e8c97a', color: '#1a2e1a', fontSize: '13px', textAlign: 'center', textDecoration: 'none', fontFamily: 'Georgia, serif', position: 'relative' }}
+              >
+                <p style={{ fontSize: '9px', fontWeight: 700, fontFamily: 'sans-serif', letterSpacing: '0.05em' }}>BEST VALUE</p>
+                <p style={{ fontWeight: 400 }}>Annual</p>
+                <p style={{ fontSize: '16px', marginTop: '2px' }}>$69.99</p>
+              </a>
+            </div>
+            <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)', textAlign: 'center', marginTop: '10px' }}>
+              Tap a plan to unlock · Activate at soul-guide-client.vercel.app/activate
+            </p>
           </div>
         </div>
       )}
