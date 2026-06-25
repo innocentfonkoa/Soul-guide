@@ -1,5 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 
+const MONTHLY_URL = 'https://selar.com/s641241t38';
+const ANNUAL_URL  = 'https://selar.com/2b3820q571';
+
 export default function Landing() {
   const navigate = useNavigate();
 
@@ -13,6 +16,7 @@ export default function Landing() {
         </button>
       </nav>
 
+      {/* Hero */}
       <section style={{ padding: '60px 24px 48px', maxWidth: '480px', margin: '0 auto', textAlign: 'center' }}>
         <div style={{ width: '72px', height: '72px', borderRadius: '50%', backgroundColor: '#1a2e1a', margin: '0 auto 32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <svg viewBox="0 0 24 24" fill="none" stroke="#e8c97a" strokeWidth={1.5} style={{ width: '36px', height: '36px' }}>
@@ -34,6 +38,7 @@ export default function Landing() {
         <p style={{ fontSize: '12px', color: '#9ca3af' }}>3 practices free. No credit card needed.</p>
       </section>
 
+      {/* Testimonial */}
       <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
         <div style={{ backgroundColor: '#1a2e1a', borderRadius: '20px', padding: '28px 24px' }}>
           <div style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}>
@@ -46,6 +51,7 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* How it works */}
       <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
         <h2 style={{ fontSize: '22px', color: '#1a2e1a', marginBottom: '28px', fontWeight: 400, textAlign: 'center' }}>How SoulGuide works</h2>
         {[
@@ -65,6 +71,7 @@ export default function Landing() {
         ))}
       </section>
 
+      {/* What's inside */}
       <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
         <h2 style={{ fontSize: '22px', color: '#1a2e1a', marginBottom: '24px', fontWeight: 400, textAlign: 'center' }}>What's inside</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
@@ -72,9 +79,9 @@ export default function Landing() {
             { icon: '🎧', title: '20+ guided practices', body: 'Across healing, grief, identity, faith, joy and stillness' },
             { icon: '🤖', title: 'AI companion', body: 'A wise presence available whenever you need to think out loud' },
             { icon: '🌱', title: 'Daily rituals', body: 'A new anchor practice every morning' },
-            { icon: '📖', title: 'Growth Mirror', body: 'A personal monthly letter on how you have grown' },
-            { icon: '🛤️', title: '30-day path', body: 'A personalized sequence built around your transition' },
-            { icon: '💭', title: 'Reflections', body: 'Guided prompts after each practice' },
+            { icon: '📓', title: 'Growth Mirror', body: 'A personal monthly letter on how you have grown' },
+            { icon: '🗺️', title: '30-day path', body: 'A personalized sequence built around your transition' },
+            { icon: '💡', title: 'Reflections', body: 'Guided prompts after each practice' },
           ].map(f => (
             <div key={f.title} style={{ backgroundColor: 'white', borderRadius: '16px', padding: '16px', border: '1px solid #f0f0f0' }}>
               <div style={{ fontSize: '24px', marginBottom: '8px' }}>{f.icon}</div>
@@ -85,27 +92,74 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Pricing — updated with both plans */}
       <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
-        <h2 style={{ fontSize: '22px', color: '#1a2e1a', marginBottom: '24px', fontWeight: 400, textAlign: 'center' }}>Simple, honest pricing</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+        <h2 style={{ fontSize: '22px', color: '#1a2e1a', marginBottom: '8px', fontWeight: 400, textAlign: 'center' }}>Simple, honest pricing</h2>
+        <p style={{ fontSize: '13px', color: '#9ca3af', textAlign: 'center', marginBottom: '24px' }}>Start free. Upgrade when you're ready.</p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+
+          {/* Free */}
           <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '20px', border: '1px solid #e5e7eb' }}>
-            <p style={{ fontSize: '16px', color: '#1a2e1a', marginBottom: '8px' }}>Free</p>
-            <p style={{ fontSize: '28px', color: '#1a2e1a', marginBottom: '12px' }}>$0</p>
+            <p style={{ fontSize: '13px', color: '#9ca3af', marginBottom: '8px' }}>Free</p>
+            <p style={{ fontSize: '28px', color: '#1a2e1a', marginBottom: '12px', fontWeight: 400 }}>$0</p>
             {['3 guided practices', 'Daily ritual', 'Onboarding path'].map(f => (
               <p key={f} style={{ fontSize: '12px', color: '#6b7280', marginBottom: '6px' }}>✓ {f}</p>
             ))}
           </div>
-          <div style={{ backgroundColor: '#1a2e1a', borderRadius: '16px', padding: '20px' }}>
-            <p style={{ fontSize: '16px', color: '#e8d5a3', marginBottom: '4px' }}>Annual</p>
-            <p style={{ fontSize: '28px', color: 'white', marginBottom: '4px' }}>$69.99</p>
-            <p style={{ fontSize: '11px', color: '#7ab87a', marginBottom: '12px' }}>per year</p>
-            {['All 20+ practices', 'AI companion', 'Growth Mirror', '30-day path', 'Reflections'].map(f => (
-              <p key={f} style={{ fontSize: '12px', color: '#c8d9c8', marginBottom: '6px' }}>✓ {f}</p>
+
+          {/* Monthly */}
+          <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '20px', border: '1px solid #e5e7eb' }}>
+            <p style={{ fontSize: '13px', color: '#9ca3af', marginBottom: '8px' }}>Monthly</p>
+            <p style={{ fontSize: '28px', color: '#1a2e1a', marginBottom: '4px', fontWeight: 400 }}>$9.99</p>
+            <p style={{ fontSize: '11px', color: '#9ca3af', marginBottom: '12px' }}>per month</p>
+            {['All 20+ practices', 'AI companion', '30-day path', 'Reflections'].map(f => (
+              <p key={f} style={{ fontSize: '12px', color: '#6b7280', marginBottom: '6px' }}>✓ {f}</p>
             ))}
+            <a
+              href={MONTHLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'block', marginTop: '16px', padding: '10px', borderRadius: '12px', border: '1px solid #1a2e1a', color: '#1a2e1a', fontSize: '12px', textAlign: 'center', textDecoration: 'none', fontFamily: 'Georgia, serif' }}
+            >
+              Get monthly
+            </a>
           </div>
         </div>
+
+        {/* Annual — full width, highlighted */}
+        <div style={{ backgroundColor: '#1a2e1a', borderRadius: '16px', padding: '24px', position: 'relative' }}>
+          <div style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#e8c97a', color: '#1a2e1a', fontSize: '11px', fontWeight: 700, padding: '4px 14px', borderRadius: '100px', fontFamily: 'sans-serif', whiteSpace: 'nowrap' }}>
+            BEST VALUE — SAVE 42%
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+            <div>
+              <p style={{ fontSize: '13px', color: '#7ab87a', marginBottom: '4px' }}>Annual</p>
+              <p style={{ fontSize: '32px', color: 'white', fontWeight: 400 }}>$69.99</p>
+              <p style={{ fontSize: '11px', color: '#7ab87a' }}>per year · just $5.83/month</p>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              {['All 20+ practices', 'AI companion', 'Growth Mirror', '30-day path', 'Reflections'].map(f => (
+                <p key={f} style={{ fontSize: '12px', color: '#c8d9c8', marginBottom: '4px' }}>✓ {f}</p>
+              ))}
+            </div>
+          </div>
+          <a
+            href={ANNUAL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'block', padding: '14px', borderRadius: '12px', backgroundColor: '#e8c97a', color: '#1a2e1a', fontSize: '15px', textAlign: 'center', textDecoration: 'none', fontFamily: 'Georgia, serif', fontWeight: 400 }}
+          >
+            Get Annual Access — $69.99/year
+          </a>
+        </div>
+
+        <p style={{ fontSize: '11px', color: '#9ca3af', textAlign: 'center', marginTop: '12px' }}>
+          Secure payment via Selar · Instant access after payment
+        </p>
       </section>
 
+      {/* More testimonials */}
       <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
         {[
           { quote: 'A beautiful reprieve from the anxiety that can hijack my thoughts. A truly worthy investment.', name: 'Margaret T.' },
@@ -119,6 +173,7 @@ export default function Landing() {
         ))}
       </section>
 
+      {/* Final CTA */}
       <section style={{ padding: '0 24px 80px', maxWidth: '480px', margin: '0 auto', textAlign: 'center' }}>
         <h2 style={{ fontSize: '26px', color: '#1a2e1a', marginBottom: '16px', fontWeight: 400 }}>
           You showed up.<br />That's everything.
@@ -132,12 +187,24 @@ export default function Landing() {
         >
           Start for free
         </button>
-        <button
-          onClick={() => { window.location.href = 'https://selar.com/2b3820q571'; }}
-          style={{ backgroundColor: 'transparent', color: '#4a7a4a', border: '1px solid #4a7a4a', borderRadius: '100px', padding: '16px 40px', fontSize: '14px', cursor: 'pointer', fontFamily: 'Georgia, serif', display: 'block', width: '100%' }}
-        >
-          Unlock full access — $69.99/year
-        </button>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+          <a
+            href={MONTHLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ backgroundColor: 'transparent', color: '#4a7a4a', border: '1px solid #4a7a4a', borderRadius: '100px', padding: '14px 16px', fontSize: '13px', cursor: 'pointer', fontFamily: 'Georgia, serif', textAlign: 'center', textDecoration: 'none', display: 'block' }}
+          >
+            Monthly — $9.99
+          </a>
+          <a
+            href={ANNUAL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ backgroundColor: '#4a7a4a', color: 'white', border: 'none', borderRadius: '100px', padding: '14px 16px', fontSize: '13px', cursor: 'pointer', fontFamily: 'Georgia, serif', textAlign: 'center', textDecoration: 'none', display: 'block' }}
+          >
+            Annual — $69.99
+          </a>
+        </div>
       </section>
 
       <footer style={{ padding: '24px', borderTop: '1px solid #f0f0f0', textAlign: 'center' }}>

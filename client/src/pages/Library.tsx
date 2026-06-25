@@ -7,34 +7,74 @@ import PracticeCard from '../components/PracticeCard';
 import AudioPlayer from '../components/AudioPlayer';
 
 const FREE_PRACTICE_LIMIT = 3;
+const MONTHLY_URL = 'https://selar.com/s641241t38';
+const ANNUAL_URL  = 'https://selar.com/2b3820q571';
 const categories = ['all', 'healing', 'identity', 'grief', 'faith', 'connection', 'joy', 'stillness'];
 
 function PaywallModal({ onClose }: { onClose: () => void }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}>
-      <div className="rounded-3xl w-full mx-4 p-6 text-center" style={{ backgroundColor: '#fdfaf7', maxWidth: '400px' }}>
-        <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: '#e6ede6' }}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="#4a7a4a" strokeWidth={1.5} className="w-8 h-8">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
-          </svg>
+    <div className="fixed inset-0 z-50 flex items-end justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}>
+      <div className="rounded-3xl w-full p-6" style={{ backgroundColor: '#fdfaf7', maxWidth: '480px' }}>
+
+        {/* Header */}
+        <div className="text-center mb-6">
+          <div style={{ fontSize: '40px', marginBottom: '12px' }}>🌸</div>
+          <h3 className="font-serif text-xl mb-2" style={{ color: '#1a2e1a' }}>Unlock Full Access</h3>
+          <p className="text-sm" style={{ color: '#6b7280', lineHeight: 1.6 }}>
+            You've completed your 3 free practices.<br />Choose a plan to continue your journey.
+          </p>
         </div>
-        <h3 className="font-serif text-xl mb-2" style={{ color: '#2c2c2c' }}>
-          You've explored 3 free practices
-        </h3>
-        <p className="text-sm mb-6" style={{ color: '#6b7280', lineHeight: 1.6 }}>
-          Unlock all 20 practices, your AI companion, and monthly Growth Mirror for just $69.99/year.
-        </p>
-        <button
-          onClick={() => { window.location.href = 'https://selar.com/2b3820q571'; }}
-          className="w-full py-4 rounded-2xl text-white font-medium mb-3"
-          style={{ backgroundColor: '#1a2e1a' }}
+
+        {/* Monthly option */}
+        <a
+          href={MONTHLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderRadius: '16px', border: '1px solid #e5e7eb', marginBottom: '10px', textDecoration: 'none', backgroundColor: 'white' }}
         >
-          Unlock full access — $69.99/year
-        </button>
+          <div>
+            <p style={{ fontSize: '15px', color: '#1a2e1a', fontFamily: 'Georgia, serif', marginBottom: '2px' }}>Monthly</p>
+            <p style={{ fontSize: '12px', color: '#9ca3af' }}>Renew anytime · no lock-in</p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <p style={{ fontSize: '20px', color: '#1a2e1a', fontFamily: 'Georgia, serif' }}>$9.99</p>
+            <p style={{ fontSize: '11px', color: '#9ca3af' }}>/month</p>
+          </div>
+        </a>
+
+        {/* Annual option — highlighted */}
+        <div style={{ position: 'relative', marginBottom: '16px' }}>
+          <div style={{ position: 'absolute', top: '-10px', left: '16px', backgroundColor: '#e8c97a', color: '#1a2e1a', fontSize: '10px', fontWeight: 700, padding: '3px 10px', borderRadius: '100px', fontFamily: 'sans-serif' }}>
+            BEST VALUE — SAVE 42%
+          </div>
+          <a
+            href={ANNUAL_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderRadius: '16px', border: '2px solid #1a2e1a', textDecoration: 'none', backgroundColor: '#f0f5f0' }}
+          >
+            <div>
+              <p style={{ fontSize: '15px', color: '#1a2e1a', fontFamily: 'Georgia, serif', marginBottom: '2px' }}>Annual</p>
+              <p style={{ fontSize: '12px', color: '#4a7a4a' }}>Just $5.83/month</p>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <p style={{ fontSize: '20px', color: '#1a2e1a', fontFamily: 'Georgia, serif' }}>$69.99</p>
+              <p style={{ fontSize: '11px', color: '#9ca3af' }}>/year</p>
+            </div>
+          </a>
+        </div>
+
+        {/* After payment note */}
+        <div style={{ backgroundColor: '#fef9ec', borderRadius: '12px', padding: '12px', marginBottom: '16px', textAlign: 'center' }}>
+          <p style={{ fontSize: '12px', color: '#92710a', lineHeight: 1.5 }}>
+            After payment, <strong>log out and log back in</strong> to activate your access instantly.
+          </p>
+        </div>
+
         <button
           onClick={onClose}
           className="w-full py-3 rounded-2xl text-sm"
-          style={{ color: '#6b7280' }}
+          style={{ color: '#9ca3af', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'Georgia, serif' }}
         >
           Maybe later
         </button>
@@ -133,16 +173,16 @@ function PracticeDetail() {
             <button
               onClick={() => setShowPaywall(true)}
               className="w-full py-4 rounded-2xl text-white font-medium"
-              style={{ backgroundColor: '#1a2e1a' }}
+              style={{ backgroundColor: '#1a2e1a', border: 'none', cursor: 'pointer', fontFamily: 'Georgia, serif', fontSize: '15px' }}
             >
-              Unlock all practices — $69.99/year
+              Unlock all practices
             </button>
           </div>
         ) : (
           <button
             onClick={handleBegin}
             className="w-full py-4 rounded-2xl text-white font-medium text-lg flex items-center justify-center gap-3 shadow-md"
-            style={{ backgroundColor: '#4a7a4a' }}
+            style={{ backgroundColor: '#4a7a4a', border: 'none', cursor: 'pointer' }}
           >
             <svg viewBox="0 0 24 24" fill="white" className="w-6 h-6">
               <path fillRule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clipRule="evenodd" />
@@ -165,7 +205,6 @@ function PracticeDetail() {
           onComplete={handleComplete}
         />
       )}
-
       {showPaywall && <PaywallModal onClose={() => setShowPaywall(false)} />}
     </div>
   );
@@ -215,7 +254,6 @@ export default function Library() {
   };
 
   const usedPractices = parseInt(localStorage.getItem('sg_free_used') || '0');
-
   if (id) return <PracticeDetail />;
 
   return (
@@ -274,15 +312,9 @@ export default function Library() {
                 const isLocked = !user?.subscriptionActive && index >= FREE_PRACTICE_LIMIT && usedPractices >= FREE_PRACTICE_LIMIT;
                 return (
                   <div key={p.id} className="relative">
-                    <PracticeCard
-                      practice={p}
-                      onClick={() => navigate(`/library/${p.id}`)}
-                    />
+                    <PracticeCard practice={p} onClick={() => navigate(`/library/${p.id}`)} />
                     {isLocked && (
-                      <div
-                        className="absolute inset-0 rounded-2xl flex items-center justify-center"
-                        style={{ backgroundColor: 'rgba(255,255,255,0.85)' }}
-                      >
+                      <div className="absolute inset-0 rounded-2xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.85)' }}>
                         <span style={{ fontSize: '24px' }}>🔒</span>
                       </div>
                     )}
