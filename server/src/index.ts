@@ -1,6 +1,3 @@
-// server/src/index.ts
-// Full replacement — adds webhook route
-
 import express from 'express';
 import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
@@ -12,6 +9,7 @@ import insightsRoutes from './routes/insights';
 import subscriptionRoutes from './routes/subscription';
 import pathRoutes from './routes/path-route';
 import webhookRoutes from './routes/webhook';
+import adminRoutes from './routes/admin';
 import { errorHandler } from './middleware/errorHandler';
 import { buildPracticePath } from './services/pathBuilder';
 
@@ -31,6 +29,7 @@ app.use('/api/insights', insightsRoutes);
 app.use('/api/subscription', subscriptionRoutes);
 app.use('/api/path', pathRoutes);
 app.use('/api/webhook', webhookRoutes);
+app.use('/api/admin', adminRoutes);
 
 // POST /api/onboarding/complete
 app.post('/api/onboarding/complete', async (req, res) => {

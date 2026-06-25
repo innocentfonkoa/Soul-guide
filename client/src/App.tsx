@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useStore } from './store/useStore';
 import Landing from './pages/Landing';
 import Activate from './pages/Activate';
+import Admin from './pages/Admin';
 import Onboarding from './pages/Onboarding';
 import Home from './pages/Home';
 import Library from './pages/Library';
@@ -45,6 +46,7 @@ export default function App() {
         />
         <Route path="/welcome" element={<Landing />} />
         <Route path="/activate" element={<Activate />} />
+        <Route path="/admin" element={<Admin />} />
         <Route
           path="/auth"
           element={
@@ -55,66 +57,12 @@ export default function App() {
             )
           }
         />
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Home />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/library"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Library />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/library/:id"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Library />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/companion"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Companion />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/journey"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Journey />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <AppLayout>
-                <Profile />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/home" element={<ProtectedRoute><AppLayout><Home /></AppLayout></ProtectedRoute>} />
+        <Route path="/library" element={<ProtectedRoute><AppLayout><Library /></AppLayout></ProtectedRoute>} />
+        <Route path="/library/:id" element={<ProtectedRoute><AppLayout><Library /></AppLayout></ProtectedRoute>} />
+        <Route path="/companion" element={<ProtectedRoute><AppLayout><Companion /></AppLayout></ProtectedRoute>} />
+        <Route path="/journey" element={<ProtectedRoute><AppLayout><Journey /></AppLayout></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><AppLayout><Profile /></AppLayout></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/welcome" replace />} />
       </Routes>
     </BrowserRouter>

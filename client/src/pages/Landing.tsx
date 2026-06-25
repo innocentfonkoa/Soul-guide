@@ -38,16 +38,63 @@ export default function Landing() {
         <p style={{ fontSize: '12px', color: '#9ca3af' }}>3 practices free. No credit card needed.</p>
       </section>
 
-      {/* Testimonial */}
+      {/* Install the App */}
       <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
         <div style={{ backgroundColor: '#1a2e1a', borderRadius: '20px', padding: '28px 24px' }}>
+          <p style={{ fontSize: '13px', color: '#7ab87a', marginBottom: '8px', fontFamily: 'sans-serif', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Install the App</p>
+          <h3 style={{ fontSize: '20px', color: 'white', marginBottom: '8px', fontWeight: 400 }}>Add SoulGuide to your phone</h3>
+          <p style={{ fontSize: '13px', color: '#c8d9c8', lineHeight: 1.6, marginBottom: '24px' }}>
+            SoulGuide works like a native app on your phone — no App Store needed. Install it in seconds.
+          </p>
+
+          {/* iPhone */}
+          <div style={{ backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: '14px', padding: '16px', marginBottom: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+              <span style={{ fontSize: '22px' }}>🍎</span>
+              <p style={{ fontSize: '14px', color: '#e8d5a3', fontWeight: 400 }}>iPhone (Safari)</p>
+            </div>
+            <ol style={{ margin: 0, padding: '0 0 0 16px' }}>
+              {[
+                'Open soul-guide-client.vercel.app in Safari',
+                'Tap the Share button (□↑) at the bottom',
+                'Scroll down and tap "Add to Home Screen"',
+                'Tap "Add" — done!',
+              ].map((step, i) => (
+                <li key={i} style={{ fontSize: '12px', color: '#c8d9c8', lineHeight: 1.7 }}>{step}</li>
+              ))}
+            </ol>
+          </div>
+
+          {/* Android */}
+          <div style={{ backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: '14px', padding: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+              <span style={{ fontSize: '22px' }}>🤖</span>
+              <p style={{ fontSize: '14px', color: '#e8d5a3', fontWeight: 400 }}>Android (Chrome)</p>
+            </div>
+            <ol style={{ margin: 0, padding: '0 0 0 16px' }}>
+              {[
+                'Open soul-guide-client.vercel.app in Chrome',
+                'Tap the 3-dot menu (⋮) at the top right',
+                'Tap "Add to Home Screen"',
+                'Tap "Add" — done!',
+              ].map((step, i) => (
+                <li key={i} style={{ fontSize: '12px', color: '#c8d9c8', lineHeight: 1.7 }}>{step}</li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonial */}
+      <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
+        <div style={{ backgroundColor: '#f0f5f0', borderRadius: '20px', padding: '28px 24px' }}>
           <div style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}>
             {[1,2,3,4,5].map(i => <span key={i} style={{ color: '#e8c97a', fontSize: '16px' }}>★</span>)}
           </div>
-          <p style={{ color: '#e8d5a3', fontSize: '15px', lineHeight: 1.7, marginBottom: '16px', fontStyle: 'italic' }}>
+          <p style={{ color: '#2c2c2c', fontSize: '15px', lineHeight: 1.7, marginBottom: '16px', fontStyle: 'italic' }}>
             "I am so grateful for SoulGuide. It takes all the things I have been trying to include in my mindfulness practice and makes them accessible in one place."
           </p>
-          <p style={{ color: '#7ab87a', fontSize: '13px' }}>— Sarah M., navigating divorce</p>
+          <p style={{ color: '#4a7a4a', fontSize: '13px' }}>— Sarah M., navigating divorce</p>
         </div>
       </section>
 
@@ -92,14 +139,12 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Pricing — updated with both plans */}
+      {/* Pricing */}
       <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
         <h2 style={{ fontSize: '22px', color: '#1a2e1a', marginBottom: '8px', fontWeight: 400, textAlign: 'center' }}>Simple, honest pricing</h2>
         <p style={{ fontSize: '13px', color: '#9ca3af', textAlign: 'center', marginBottom: '24px' }}>Start free. Upgrade when you're ready.</p>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
-
-          {/* Free */}
           <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '20px', border: '1px solid #e5e7eb' }}>
             <p style={{ fontSize: '13px', color: '#9ca3af', marginBottom: '8px' }}>Free</p>
             <p style={{ fontSize: '28px', color: '#1a2e1a', marginBottom: '12px', fontWeight: 400 }}>$0</p>
@@ -107,8 +152,6 @@ export default function Landing() {
               <p key={f} style={{ fontSize: '12px', color: '#6b7280', marginBottom: '6px' }}>✓ {f}</p>
             ))}
           </div>
-
-          {/* Monthly */}
           <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '20px', border: '1px solid #e5e7eb' }}>
             <p style={{ fontSize: '13px', color: '#9ca3af', marginBottom: '8px' }}>Monthly</p>
             <p style={{ fontSize: '28px', color: '#1a2e1a', marginBottom: '4px', fontWeight: 400 }}>$9.99</p>
@@ -116,18 +159,13 @@ export default function Landing() {
             {['All 20+ practices', 'AI companion', '30-day path', 'Reflections'].map(f => (
               <p key={f} style={{ fontSize: '12px', color: '#6b7280', marginBottom: '6px' }}>✓ {f}</p>
             ))}
-            <a
-              href={MONTHLY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ display: 'block', marginTop: '16px', padding: '10px', borderRadius: '12px', border: '1px solid #1a2e1a', color: '#1a2e1a', fontSize: '12px', textAlign: 'center', textDecoration: 'none', fontFamily: 'Georgia, serif' }}
-            >
+            <a href={MONTHLY_URL} target="_blank" rel="noopener noreferrer"
+              style={{ display: 'block', marginTop: '16px', padding: '10px', borderRadius: '12px', border: '1px solid #1a2e1a', color: '#1a2e1a', fontSize: '12px', textAlign: 'center', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
               Get monthly
             </a>
           </div>
         </div>
 
-        {/* Annual — full width, highlighted */}
         <div style={{ backgroundColor: '#1a2e1a', borderRadius: '16px', padding: '24px', position: 'relative' }}>
           <div style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#e8c97a', color: '#1a2e1a', fontSize: '11px', fontWeight: 700, padding: '4px 14px', borderRadius: '100px', fontFamily: 'sans-serif', whiteSpace: 'nowrap' }}>
             BEST VALUE — SAVE 42%
@@ -144,22 +182,17 @@ export default function Landing() {
               ))}
             </div>
           </div>
-          <a
-            href={ANNUAL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ display: 'block', padding: '14px', borderRadius: '12px', backgroundColor: '#e8c97a', color: '#1a2e1a', fontSize: '15px', textAlign: 'center', textDecoration: 'none', fontFamily: 'Georgia, serif', fontWeight: 400 }}
-          >
+          <a href={ANNUAL_URL} target="_blank" rel="noopener noreferrer"
+            style={{ display: 'block', padding: '14px', borderRadius: '12px', backgroundColor: '#e8c97a', color: '#1a2e1a', fontSize: '15px', textAlign: 'center', textDecoration: 'none', fontFamily: 'Georgia, serif' }}>
             Get Annual Access — $69.99/year
           </a>
         </div>
-
         <p style={{ fontSize: '11px', color: '#9ca3af', textAlign: 'center', marginTop: '12px' }}>
           Secure payment via Selar · Instant access after payment
         </p>
       </section>
 
-      {/* More testimonials */}
+      {/* Testimonials */}
       <section style={{ padding: '0 24px 48px', maxWidth: '480px', margin: '0 auto' }}>
         {[
           { quote: 'A beautiful reprieve from the anxiety that can hijack my thoughts. A truly worthy investment.', name: 'Margaret T.' },
@@ -188,20 +221,12 @@ export default function Landing() {
           Start for free
         </button>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-          <a
-            href={MONTHLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ backgroundColor: 'transparent', color: '#4a7a4a', border: '1px solid #4a7a4a', borderRadius: '100px', padding: '14px 16px', fontSize: '13px', cursor: 'pointer', fontFamily: 'Georgia, serif', textAlign: 'center', textDecoration: 'none', display: 'block' }}
-          >
+          <a href={MONTHLY_URL} target="_blank" rel="noopener noreferrer"
+            style={{ backgroundColor: 'transparent', color: '#4a7a4a', border: '1px solid #4a7a4a', borderRadius: '100px', padding: '14px 16px', fontSize: '13px', fontFamily: 'Georgia, serif', textAlign: 'center', textDecoration: 'none', display: 'block' }}>
             Monthly — $9.99
           </a>
-          <a
-            href={ANNUAL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ backgroundColor: '#4a7a4a', color: 'white', border: 'none', borderRadius: '100px', padding: '14px 16px', fontSize: '13px', cursor: 'pointer', fontFamily: 'Georgia, serif', textAlign: 'center', textDecoration: 'none', display: 'block' }}
-          >
+          <a href={ANNUAL_URL} target="_blank" rel="noopener noreferrer"
+            style={{ backgroundColor: '#4a7a4a', color: 'white', border: 'none', borderRadius: '100px', padding: '14px 16px', fontSize: '13px', fontFamily: 'Georgia, serif', textAlign: 'center', textDecoration: 'none', display: 'block' }}>
             Annual — $69.99
           </a>
         </div>
