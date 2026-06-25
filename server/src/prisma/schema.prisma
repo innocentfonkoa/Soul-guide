@@ -1,3 +1,6 @@
+// server/src/prisma/schema.prisma
+// Full replacement — adds subscriptionActive and subscriptionExpiry to User
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,17 +11,19 @@ datasource db {
 }
 
 model User {
-  id                String    @id @default(cuid())
-  email             String    @unique
-  passwordHash      String
-  name              String
-  createdAt         DateTime  @default(now())
-  transitionType    String?
-  transitionDetail  String?
-  primaryIntention  String?
-  morningOrEvening  String?
-  practiceMinutes   Int?
-  onboardingDone    Boolean   @default(false)
+  id                  String    @id @default(cuid())
+  email               String    @unique
+  passwordHash        String
+  name                String
+  createdAt           DateTime  @default(now())
+  transitionType      String?
+  transitionDetail    String?
+  primaryIntention    String?
+  morningOrEvening    String?
+  practiceMinutes     Int?
+  onboardingDone      Boolean   @default(false)
+  subscriptionActive  Boolean   @default(false)
+  subscriptionExpiry  DateTime?
 
   practices         UserPractice[]
   reflections       Reflection[]
