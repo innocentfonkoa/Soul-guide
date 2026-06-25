@@ -1,154 +1,122 @@
+// server/src/services/pathBuilder.ts
+// Full replacement — matches your exact Prisma schema
+
 import { PrismaClient } from '@prisma/client';
-import Anthropic from '@anthropic-ai/sdk';
 
 const prisma = new PrismaClient();
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-interface PathDay {
-  day: number;
-  practiceId: string;
-}
-
-const transitionCategoryMap: Record<string, string[]> = {
-  divorce: ['healing', 'identity', 'grief', 'connection'],
-  loss: ['grief', 'healing', 'faith', 'stillness'],
-  'empty-nest': ['identity', 'healing', 'connection', 'joy'],
-  retirement: ['identity', 'joy', 'stillness', 'faith'],
-  career: ['identity', 'faith', 'healing', 'stillness'],
-  health: ['healing', 'stillness', 'faith', 'identity'],
+const FOCUS_MAP: Record<string, string[]> = {
+  anxiety:       ['breathing', 'calm', 'grounding', 'stress'],
+  sleep:         ['sleep', 'rest', 'relaxation', 'stillness'],
+  identity:      ['identity', 'self-discovery', 'reflection', 'purpose'],
+  energy:        ['energy', 'morning', 'vitality', 'joy'],
+  relationships: ['relationships', 'connection', 'healing'],
+  confidence:    ['confidence', 'empowerment', 'identity'],
+  grief:         ['grief', 'loss', 'healing', 'faith'],
+  body:          ['body', 'healing', 'stillness'],
+  purpose:       ['purpose', 'identity', 'faith'],
+  rest:          ['stillness', 'rest', 'calm'],
+  stress:        ['calm', 'breathing', 'grounding'],
 };
 
-async function buildDeterministicPath(
-  userId: string,
-  transitionType: string | null,
-  intention: string
-): Promise<void> {
-  const categories = transitionType
-    ? transitionCategoryMap[transitionType] || ['healing', 'identity', 'stillness', 'faith']
-    : ['healing', 'identity', 'stillness', 'faith'];
-
-  const practices = await prisma.practice.findMany({
-    where: { category: { in: categories } },
-    orderBy: { createdAt: 'asc' },
-  });
-
-  if (practices.length === 0) {
-    const all = await prisma.practice.findMany({ orderBy: { createdAt: 'asc' } });
-    practices.push(...all);
-  }
-
-  const startDate = new Date();
-  const endDate = new Date(startDate);
-  endDate.setDate(endDate.getDate() + 30);
-
-  const path = await prisma.practicePath.create({
-    data: {
-      userId,
-      title: 'Your 30-Day Journey',
-      intention,
-      startDate,
-      endDate,
-      items: {
-        create: Array.from({ length: 30 }, (_, i) => ({
-          practiceId: practices[i % practices.length].id,
-          dayNumber: i + 1,
-          completed: false,
-        })),
-      },
-    },
-  });
-
-  console.log(`Created deterministic path ${path.id} for user ${userId}`);
+function getPhase(day: number): string {
+  if (day <= 5)  return 'intro';
+  if (day <= 14) return 'build';
+  if (day <= 24) return 'deepen';
+  return 'integrate';
 }
 
 export async function buildPracticePath(userId: string): Promise<void> {
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: {
-      name: true,
-      transitionType: true,
-      transitionDetail: true,
-      primaryIntention: true,
-    },
-  });
-
-  if (!user) throw new Error('User not found');
-
-  // Delete existing path if present
-  const existing = await prisma.practicePath.findUnique({ where: { userId } });
-  if (existing) {
-    await prisma.pathItem.deleteMany({ where: { pathId: existing.id } });
-    await prisma.practicePath.delete({ where: { userId } });
-  }
-
-  const intention = user.primaryIntention || 'healing and growth';
-  const allPractices = await prisma.practice.findMany({ select: { id: true, title: true, category: true, theme: true } });
-
   try {
-    const practiceList = allPractices
-      .map((p) => `id:${p.id} title:"${p.title}" category:${p.category} theme:${p.theme}`)
-      .join('\n');
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new Error(`User ${userId} not found`);
 
-    const prompt = `Design a 30-day mindfulness practice path for someone named ${user.name} who is going through: ${user.transitionType || 'a life transition'}${user.transitionDetail ? ` (${user.transitionDetail})` : ''}. Their primary intention is: ${intention}.
+    // Extract focus from onboarding fields
+    const focusKeywords: string[] = [];
+    if (user.transitionType) {
+      const mapped = FOCUS_MAP[user.transitionType.toLowerCase()];
+      if (mapped) focusKeywords.push(...mapped);
+    }
+    if (user.primaryIntention) {
+      const mapped = FOCUS_MAP[user.primaryIntention.toLowerCase()];
+      if (mapped) focusKeywords.push(...mapped);
+    }
+    // Default if nothing matched
+    if (focusKeywords.length === 0) {
+      focusKeywords.push('healing', 'stillness', 'identity', 'calm', 'reflection');
+    }
 
-Available practices:
-${practiceList}
+    const unique = [...new Set(focusKeywords)];
+    console.log(`[pathBuilder] User ${userId} keywords:`, unique);
 
-Create a thoughtful 30-day sequence. Vary the categories. Start gently, build depth in weeks 2-3, integrate in week 4.
+    // Load all practices
+    const allPractices = await prisma.practice.findMany();
+    if (allPractices.length === 0) throw new Error('No practices found');
 
-Respond with ONLY valid JSON in this format:
-{
-  "title": "Path title",
-  "days": [
-    { "day": 1, "practiceId": "..." },
-    ...all 30 days...
-  ]
-}`;
+    // Score by relevance
+    const scored = allPractices.map(p => {
+      const text = `${p.title} ${p.category} ${p.theme} ${p.description}`.toLowerCase();
+      const score = unique.reduce((acc, kw) => acc + (text.includes(kw) ? 1 : 0), 0);
+      return { ...p, score };
+    }).sort((a, b) => b.score - a.score || Math.random() - 0.5);
 
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1000,
-      temperature: 0.3,
-      messages: [{ role: 'user', content: prompt }],
-    });
+    // Delete existing path
+    const existing = await prisma.practicePath.findUnique({ where: { userId } });
+    if (existing) {
+      await prisma.pathItem.deleteMany({ where: { pathId: existing.id } });
+      await prisma.practicePath.delete({ where: { userId } });
+    }
 
-    const content = response.content[0];
-    if (content.type !== 'text') throw new Error('Unexpected response type');
-
-    const jsonMatch = content.text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('No JSON found in response');
-
-    const parsed = JSON.parse(jsonMatch[0]) as { title: string; days: PathDay[] };
-
-    const validPracticeIds = new Set(allPractices.map((p) => p.id));
-    const validDays = parsed.days.filter(
-      (d) => d.day >= 1 && d.day <= 30 && validPracticeIds.has(d.practiceId)
-    );
-
-    if (validDays.length < 28) throw new Error('Not enough valid days in AI response');
-
+    // Build intention label from user data
+    const intention = user.primaryIntention || user.transitionType || 'Wellbeing & Growth';
     const startDate = new Date();
     const endDate = new Date(startDate);
-    endDate.setDate(endDate.getDate() + 30);
+    endDate.setDate(endDate.getDate() + 29);
 
-    await prisma.practicePath.create({
+    // Create path — matches schema exactly (title, intention, startDate, endDate required)
+    const path = await prisma.practicePath.create({
       data: {
         userId,
-        title: parsed.title || 'Your 30-Day Journey',
+        title: 'Your 30-Day Journey',
         intention,
         startDate,
         endDate,
-        items: {
-          create: validDays.map((d) => ({
-            practiceId: d.practiceId,
-            dayNumber: d.day,
-            completed: false,
-          })),
-        },
       },
     });
+
+    // Create 30 path items — uses 'completed' (not isCompleted) per schema
+    const items = Array.from({ length: 30 }, (_, i) => ({
+      pathId: path.id,
+      practiceId: scored[i % scored.length].id,
+      dayNumber: i + 1,
+      completed: false,
+    }));
+
+    await prisma.pathItem.createMany({ data: items });
+    console.log(`[pathBuilder] ✅ 30-day path created for user ${userId}`);
   } catch (err) {
-    console.error('AI path generation failed, using deterministic fallback', err);
-    await buildDeterministicPath(userId, user.transitionType, intention);
+    console.error('[pathBuilder] Error:', err);
+    throw err;
   }
+}
+
+export async function getPathForUser(userId: string) {
+  return prisma.practicePath.findUnique({
+    where: { userId },
+    include: {
+      items: {
+        orderBy: { dayNumber: 'asc' },
+        include: { practice: true },
+      },
+    },
+  });
+}
+
+export async function markDayComplete(userId: string, dayNumber: number) {
+  const path = await prisma.practicePath.findUnique({ where: { userId } });
+  if (!path) return null;
+  return prisma.pathItem.updateMany({
+    where: { pathId: path.id, dayNumber },
+    data: { completed: true },
+  });
 }

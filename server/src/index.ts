@@ -1,3 +1,6 @@
+// server/src/index.ts
+// Full replacement — adds pathRoutes registration
+
 import express from 'express';
 import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
@@ -7,6 +10,7 @@ import journeyRoutes from './routes/journey';
 import companionRoutes from './routes/companion';
 import insightsRoutes from './routes/insights';
 import subscriptionRoutes from './routes/subscription';
+import pathRoutes from './routes/path-route';
 import { errorHandler } from './middleware/errorHandler';
 import { buildPracticePath } from './services/pathBuilder';
 
@@ -24,6 +28,7 @@ app.use('/api/journey', journeyRoutes);
 app.use('/api/companion', companionRoutes);
 app.use('/api/insights', insightsRoutes);
 app.use('/api/subscription', subscriptionRoutes);
+app.use('/api/path', pathRoutes);
 
 // POST /api/onboarding/complete — trigger path building
 app.post('/api/onboarding/complete', async (req, res) => {
@@ -34,6 +39,7 @@ app.post('/api/onboarding/complete', async (req, res) => {
       return;
     }
     await prisma.user.update({ where: { id: userId }, data: { onboardingDone: true } });
+    // Fire and forget — don't block the response
     buildPracticePath(userId).catch((err) => console.error('Path build error', err));
     res.json({ message: 'Onboarding complete, path building started' });
   } catch (err) {
